@@ -15,15 +15,21 @@ template<class T>
 class ArrayDEM
 {
 public:
-	string filename;
+	string fullname;
 	string basename;
+	string dir;
+	string filename;
+	string ext;
 	vector<double> geotransform;
 	string projection;
 
 	ArrayDEM(const string &infile)
 	{
-		filename = infile;
-		basename = filename.substr(filename.find_last_of('\\') + 1);
+		fullname = infile;
+		basename = fullname.substr(fullname.find_last_of('\\') + 1);
+		dir = fullname.substr(0, fullname.find_last_of('\\'));
+		ext = fullname.substr(fullname.find_last_of('.')+1);
+		filename = basename.substr(0, basename.find_last_of('.'));
 		loadGDAL();
 	}
 
@@ -33,12 +39,18 @@ public:
 	}
 
 	template<class U>
-	void resize(const ArrayDEM<U> &other, const T& val = T()) {
+	void resize(ArrayDEM<U> &other, const T& val = T()) {
 		resize(other.width(), other.height(), val);
 		geotransform = other.geotransform;
 		projection = other.projection;
 	}
 
+	void resize(xy_t width, xy_t height, const T& val = T()) {
+		data.resize(width*height);
+		fill(data.begin(), data.end(), val);
+		view_height = height;
+		view_width = width;
+	}
 	
 	T& operator()(xy_t x, xy_t y) {
 		return data[xyToI(x, y)];
@@ -48,21 +60,21 @@ public:
 	}
 
 
-	T* getData(void)
+	T* getData()
 	{
 		return data.data();
 	}
 
-	xy_t width(void)
+	xy_t width()
 	{
 		return view_width;
 	}
-	xy_t height(void)
+	xy_t height()
 	{
 		return view_height;
 	}
 
-	T getNoData(void) const
+	T getNoData()
 	{
 		return no_data;
 	}
@@ -72,28 +84,51 @@ public:
 		no_data = val;
 	}
 
-	bool inGrid(xy_t x, xy_t y) const
+	bool inGrid(xy_t x, xy_t y)
 	{
 		return (0 <= x && x < view_width && 0 <= y && y < view_height);
 	}
 
-	bool isEdge(xy_t x, xy_t y) const
+	bool isEdge(xy_t x, xy_t y)
 	{
 		for (int i = 1; i <= 8; i++)
 		{
 			xy_t nx = x + dx[i];
 			xy_t ny = y + dy[i];
-			if (!inGrid(nx, ny) || (data[xyTol(nx, ny)] == no_data))
+			if (!inGrid(nx, ny) || (data[xyToI(nx, ny)] == no_data))
 				return true;
 		}
+		return false;
 	}
 
 	void saveGDAL(const string &filename)
 	{
+		GDALDriver *poDriver = GetGDALDriverManager()->GetDriverByName("GTiff");
+		if (poDriver == NULL)
+		{
+			cerr << "Could not open GDAL driver!" << endl;
+			throw runtime_error("Could not open GDAL driver!");
+		}
+		GDALDataset *fout = poDriver->Create(filename.c_str(), view_width, view_height, 1, myGDALType(), NULL);
+		if (fout == NULL)
+		{
+			cerr << "Could not create GDAL save file:" << filename << "!" << endl;
+			throw runtime_error("Could not create save file!");
+		}
+		GDALRasterBand *poBand = fout->GetRasterBand(1);
+		poBand->SetNoDataValue(no_data);
 
+		fout->SetGeoTransform(geotransform.data());
+
+		fout->SetProjection(projection.c_str());
+		auto temp = poBand->RasterIO(GF_Write, 0, 0, view_width, view_height, data.data(), view_width, view_height, myGDALType(), 0, 0);
+
+		if (temp != CE_None)
+			cerr << "Error writing file!" << endl;
+		GDALClose(fout);
 	}
 
-	void printStamp(void)
+	void printStamp()
 	{
 		cout << "projection:" << projection << endl;
 		cout << "geotransform:" << endl;
@@ -103,7 +138,7 @@ public:
 		}
 		cout << "width:" << view_width << endl;
 		cout << "height:" << view_height << endl;
-		cout << "fullpath:" << filename << endl;
+		cout << "fullpath:" << fullname << endl;
 		cout << "basename:" << basename << endl;
 	}
 
@@ -113,29 +148,21 @@ private:
 	xy_t view_width;
 	xy_t view_height;
 
-	i_t xyTol(xy_t x, xy_t y)
+	i_t xyToI(xy_t x, xy_t y)
 	{
 		return (i_t)y*(i_t)view_width + (i_t)x;
 	}
 
-	void resize(xy_t width, xy_t height, const T& val = T()) {
-		data.resize(width*height);
-		fill(data.begin(), data.end(), val);
-		view_height = height;
-		view_width = width;
-	}
-
-
-	GDALDataType myGDALType(void) const
+	GDALDataType myGDALType() const
 	{
 		return NativeTypeToGDAL<T>();
 	}
 	void loadGDAL()
 	{
 		GDALAllRegister();
-		GDALDataset *fin = (GDALDataset*)GDALOpen(filename.c_str(), GA_ReadOnly);
+		GDALDataset *fin = (GDALDataset*)GDALOpen(fullname.c_str(), GA_ReadOnly);
 		if (fin == NULL)
-			throw runtime_error("Unable to read file " + filename + "!");
+			throw runtime_error("Unable to read file " + fullname + "!");
 		GDALRasterBand *band = fin->GetRasterBand(1);
 		view_height = band->GetYSize();
 		view_width = band->GetXSize();
@@ -143,7 +170,7 @@ private:
 		geotransform.resize(6);
 		if (fin->GetGeoTransform(geotransform.data()) != CE_None)
 		{
-			cerr << "Warning, could not get a geotransform from '" << filename << "'! Setting to standard geotransform." << endl;
+			cerr << "Warning, could not get a geotransform from '" << fullname << "'! Setting to standard geotransform." << endl;
 			geotransform = { { 1000., 1., 0., 1000., 0., -1. } };
 		}
 
@@ -154,7 +181,7 @@ private:
 		data.resize(view_height*view_width);
 		auto temp = band->RasterIO(GF_Read, 0, 0, view_width, view_height, data.data(), view_width, view_height, myGDALType(), 0, 0);
 		if (temp != CE_None) {
-			cerr << "An error occured while trying to read '" << filename << "' into RAM." << endl;
+			cerr << "An error occured while trying to read '" << fullname << "' into RAM." << endl;
 			throw runtime_error("Error reading file with GDAL!");
 		}
 

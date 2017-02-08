@@ -9,8 +9,9 @@ using namespace std;
 
 int main(void)
 {
-	string filename = "d:\\Pictures\\sample.jpg";
+	string filename = "d:\\Pictures\\changwu.tif";
 	GDALDataType dataType = getGDALType(filename);
+	bool isIdentify = true;
 	
 	switch (dataType) 
 	{
@@ -18,25 +19,25 @@ int main(void)
 			cerr << "Unrecognised data type: " << dataType << endl;
 			return -1;
 		case GDT_Byte:
-			identify_depression<uint8_t >(filename);
+			fill_depression<uint8_t >(filename, isIdentify);
 			break;
 		case GDT_UInt16:
-			identify_depression<uint16_t >(filename);
+			fill_depression<uint16_t >(filename, isIdentify);
 			break;
 		case GDT_Int16:
-			identify_depression<int16_t >(filename);
+			fill_depression<int16_t >(filename, isIdentify);
 			break;
 		case GDT_UInt32:
-			identify_depression<uint32_t >(filename);
+			fill_depression<uint32_t >(filename, isIdentify);
 			break;
 		case GDT_Int32:
-			identify_depression<int32_t >(filename);
+			fill_depression<int32_t >(filename, isIdentify);
 			break;
 		case GDT_Float32:
-			identify_depression<float >(filename);
+			fill_depression<float >(filename, isIdentify);
 			break;
 		case GDT_Float64:
-			identify_depression<double >(filename);
+			fill_depression<double >(filename, isIdentify);
 			break;
 		case GDT_CInt16:
 		case GDT_CInt32:
