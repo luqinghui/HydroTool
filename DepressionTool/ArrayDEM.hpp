@@ -91,7 +91,7 @@ public:
 
 	bool isEdge(xy_t x, xy_t y)
 	{
-		for (int i = 1; i <= 8; i++)
+		for (int i = 0; i < 8; i++)
 		{
 			xy_t nx = x + dx[i];
 			xy_t ny = y + dy[i];

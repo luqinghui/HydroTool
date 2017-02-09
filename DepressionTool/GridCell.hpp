@@ -3,7 +3,6 @@
 
 #include <vector>
 #include <queue>
-#include <cmath>
 #include <functional>
 
 using namespace std;
@@ -34,8 +33,8 @@ public:
 	int k;
 	GridCellZk(){}
 	GridCellZk(int x, int y,elev_t z, int k):GridCellZ<elev_t>(x,y,z),k(k){}
-	bool operator < (const GridCellZk<elev_t>& a) const { return GridCellZ<elev_t>::z < a.z || (isnan(GridCellZ<elev_t>::z) && !isnan(a.z)); }
-	bool operator > (const GridCellZk<elev_t>& a) const { return GridCellZ<elev_t>::z > a.z || (!isnan(GridCellZ<elev_t>::z) && isnan(a.z)); }
+	bool operator < (const GridCellZk<elev_t>& a) const { return GridCellZ<elev_t>::z < a.z; }
+	bool operator > (const GridCellZk<elev_t>& a) const { return GridCellZ<elev_t>::z > a.z; }
 };
 
 template<typename elev_t>
