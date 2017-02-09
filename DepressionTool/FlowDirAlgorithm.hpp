@@ -30,7 +30,9 @@ void flow_dir_pf_d8(const string &filename, bool forceout) {
 				if (forceout) {
 					//calculalte the edge cell flowdir
 				}
-				open.emplace(x, y, elevation(x, y));
+				else {
+					open.emplace(x, y, elevation(x, y));
+				}
 			}
 		}
 	}
@@ -54,11 +56,23 @@ void flow_dir_pf_d8(const string &filename, bool forceout) {
 }
 
 template<class elev_t>
-static uint8_t d8_flow_dir_cell(ArrayDEM<elev_t> &elevation, xy_t x, xy_t y) {
-	
+static uint8_t d8_flow_dir_cell(ArrayDEM<elev_t> &elevations, xy_t x, xy_t y) {
+	elev_t minimum_elevation = elevations(x, y);
+	int flowdir = NO_FLOW;
+	for (int n = 0; n < 8; n++)
+		if (
+			elevations(x + dx[n], y + dy[n])<minimum_elevation
+			|| (elevations(x + dx[n], y + dy[n]) == minimum_elevation
+				&& flowdir % 2 == 1 && n % 2 == 0) //TODO: What is this modulus stuff for?
+			) {
+			minimum_elevation = elevations(x + dx[n], y + dy[n]);
+			flowdir = n;
+		}
+
+	return flowdir;
 }
 
-//need to fill depression (not complete)
+//need to fill depression (flat with priority-flood)
 template<class elev_t>
 void flow_dir_original_d8(const string &filename, bool forceout) {
 	ArrayDEM<elev_t> elevation(filename);
@@ -67,27 +81,41 @@ void flow_dir_original_d8(const string &filename, bool forceout) {
 	flowdir.resize(elevation, NO_FLOW);
 	flowdir.setNoData(NO_FLOW);
 
+	GridCellZk_pq<elev_t> open;
+
 	xy_t width = elevation.width(), height = elevation.height();
 	elev_t no_data = elevation.getNoData();
 
 	for (xy_t y = 0; y < height; y++) {
 		for (xy_t x = 0; x < width; x++) {
-			if (elevation(x, y) != no_data) {
-				if (elevation.isEdge(x, y)) {
-					if (forceout) {
-						//flowdir(x, y) =  calculate edge cell flowdir
-					}
-					else
-						flowdir(x, y) = NO_FLOW;
+			if (elevation(x, y) != no_data && elevation.isEdge(x, y)) {
+				if (forceout) {
+					//calculalte the edge cell flowdir
 				}
 				else {
-					
+					open.emplace(x, y, elevation(x, y));
 				}
 			}
-			else {
-				//flowdir(x, y) = NO_FLOW;
-				//cout << '(' << x << ',' << y << ')' << " is nodata." << endl;
-				flowdir(x, y) = 3;
+		}
+	}
+
+	while (open.size() > 0) {
+		auto c = open.top();
+		open.pop();
+
+		for (int n = 0; n < 8; n++) {
+			xy_t nx = c.x + dx[n];
+			xy_t ny = c.y + dy[n];
+
+			if (elevation.inGrid(nx, ny) && elevation(nx, ny) != no_data && !elevation.isEdge(nx, ny) && flowdir(nx, ny) == NO_FLOW) {
+				if (elevation(nx, ny) == c.z) {
+					flowdir(nx, ny) = d8_arcgis_inverse[n];
+					open.emplace(nx, ny, elevation(nx, ny));
+				}
+				else {
+					flowdir(nx, ny) = d8_arcgis[d8_flow_dir_cell(elevation, nx, ny)];
+					open.emplace(nx, ny, elevation(nx, ny));
+				}
 			}
 		}
 	}

@@ -14,7 +14,7 @@ int fill_depression_alg(const string &filename, bool isIdentify);
 int identify_depression_alg(const string &filename);
 
 int main(void) {
-	string filename = "d:\\Pictures\\changwu.tif";
+	string filename = "d:\\Pictures\\changwu-fill.tif";
 
 	flow_dir_original_d8_alg(filename, false);
 
