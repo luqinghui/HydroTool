@@ -128,6 +128,4 @@ void flow_dir_jrq_d8(const string &filename, bool forceout) {
 
 }
 
-
-
 #endif
