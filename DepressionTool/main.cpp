@@ -14,17 +14,18 @@ int fill_depression_alg(const string &filename, bool isIdentify);
 int identify_depression_alg(const string &filename);
 
 int main(void) {
-	string filename = "d:\\Pictures\\changwu-fill.tif";
+	string filename = "F:\\Work\\Experiment\\Processing\\tao\\data\\QZ.tif";
 
-	flow_dir_original_d8_alg(filename, false);
+	//flow_dir_original_d8_alg(filename, false);
 
 	//fill_depression_alg(filename, false);
 
-	//identify_depression_alg(filename);
+	identify_depression_alg(filename);
 
 	return 0;
 }
 
+//原始D8
 int flow_dir_original_d8_alg(const string &filename, bool forceout) {
 	GDALDataType dataType = getGDALType(filename);
 
@@ -66,6 +67,7 @@ int flow_dir_original_d8_alg(const string &filename, bool forceout) {
 	return 0;
 }
 
+//Priority-Flood D8
 int flow_dir_pf_d8_alg(const string &filename, bool forceout) {
 	GDALDataType dataType = getGDALType(filename);
 
@@ -107,6 +109,7 @@ int flow_dir_pf_d8_alg(const string &filename, bool forceout) {
 	return 0;
 }
 
+//识别洼地
 int identify_depression_alg(const string &filename) {
 	GDALDataType dataType = getGDALType(filename);
 
@@ -148,6 +151,7 @@ int identify_depression_alg(const string &filename) {
 	return 0;
 }
 
+//填充洼地
 int fill_depression_alg(const string &filename, bool isIdentify) {
 	GDALDataType dataType = getGDALType(filename);
 

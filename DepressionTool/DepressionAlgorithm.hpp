@@ -166,7 +166,7 @@ void identify_depression(const string &filename) {
 		}
 	}
 
-	depression.saveGDAL(elevation.dir + '\\' + elevation.filename + "-pits-info.tif");
+	depression.saveGDAL(elevation.dir + '\\' + elevation.filename + "-pits-info.tif", GDT_Int32);
 }
 
 

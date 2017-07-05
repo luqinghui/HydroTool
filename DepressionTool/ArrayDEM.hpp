@@ -128,6 +128,32 @@ public:
 		GDALClose(fout);
 	}
 
+	void saveGDAL(const string &filename, GDALDataType type) {
+		GDALDriver *poDriver = GetGDALDriverManager()->GetDriverByName("GTiff");
+		if (poDriver == NULL) {
+			cerr << "Could not open GDAL driver!" << endl;
+			throw runtime_error("Could not open GDAL driver!");
+		}
+		GDALDataset *fout = poDriver->Create(filename.c_str(), view_width, view_height, 1, type, NULL);
+		if (fout == NULL) {
+			cerr << "Could not create GDAL save file:" << filename << "!" << endl;
+			throw runtime_error("Could not create save file!");
+		}
+		GDALRasterBand *poBand = fout->GetRasterBand(1);
+		poBand->SetNoDataValue(no_data);
+
+		fout->SetGeoTransform(geotransform.data());
+
+		fout->SetProjection(projection.c_str());
+		auto temp = poBand->RasterIO(GF_Write, 0, 0, view_width, view_height, data.data(), view_width, view_height, type, 0, 0);
+
+		if (temp != CE_None)
+			cerr << "Error writing file!" << endl;
+		GDALClose(fout);
+	}
+
+	
+
 	void printStamp()
 	{
 		cout << "projection:" << projection << endl;
