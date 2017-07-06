@@ -79,7 +79,7 @@ void fill_depression(const string &filename, bool isIdentify) {
 	elevation.saveGDAL(elevation.dir + '\\' + elevation.filename + "-fill.tif");
 
 	if (isIdentify)
-		closed.saveGDAL(elevation.dir + '\\' + elevation.filename + "-identify.tif");
+		closed.saveGDAL(elevation.dir + '\\' + elevation.filename + "-fill-more-info.tif");
 }
 
 //get the depressions information
@@ -95,7 +95,10 @@ void identify_depression(const string &filename) {
 	queue<GridCellZ<elev_t>> pit;
 	queue<GridCellZ<elev_t>> flat;
 
-	queue<GridCell> pour;
+	vector<GridCell> pit_cells;
+
+	//queue<GridCell> pour;
+	GridCell pour;
 
 	elev_t no_data = elevation.getNoData();
 
@@ -120,7 +123,7 @@ void identify_depression(const string &filename) {
 	//0:  processed
 	//
 	bool first = false;
-	uint32_t count = 0;
+	uint32_t count = -1;
 	while (open.size() > 0 || pit.size() > 0 || flat.size() > 0) {
 		GridCellZ<elev_t> c;
 		if (pit.size() > 0) {
@@ -130,7 +133,12 @@ void identify_depression(const string &filename) {
 		else {
 			if (first == false) {
 				first = true;
-				++count;
+				++count;	//记录洼地编号
+
+				//计算信息（洼地面积、栅格数目及出口位置）
+				if (count != 0) {
+
+				}
 			}
 			if (flat.size() > 0) {
 				c = flat.front();
@@ -149,10 +157,12 @@ void identify_depression(const string &filename) {
 				if (elevation(nx, ny) < c.z) {
 					if (first) {
 						first = false;
-						pour.push(GridCell(nx, ny));
+						//pour.push(GridCell(nx, ny));
+						pour = GridCell(nx, ny);	//记录洼地出口位置
 					}
 					pit.push(GridCellZ<elev_t>(nx, ny, c.z));
-					depression(nx, ny) = count;
+					pit_cells.push_back(GridCell(nx, ny));
+					depression(nx, ny) = 1;	//标识洼地
 				}
 				else if (elevation(nx, ny) == c.z) {
 					flat.push(GridCellZ<elev_t>(nx, ny, c.z));
@@ -166,7 +176,9 @@ void identify_depression(const string &filename) {
 		}
 	}
 
-	depression.saveGDAL(elevation.dir + '\\' + elevation.filename + "-pits-info.tif", GDT_Int32);
+	//输出洼地信息文件
+
+	depression.saveGDAL(elevation.dir + '\\' + elevation.filename + "-pits.tif", GDT_Int32);
 }
 
 

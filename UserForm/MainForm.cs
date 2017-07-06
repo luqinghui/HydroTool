@@ -13,8 +13,10 @@ namespace UserForm
 {    
     public partial class MainForm : Form
     {
+        const string DebugDllPath = @"..\..\..\x64\Debug\Toolbox.dll";
+        const string ReleaseDllPath = @"..\..\..\x64\Release\Toolbox.dll";
 
-        [DllImport(@"..\..\..\x64\Debug\Toolbox.dll", EntryPoint = "fill_depression_alg", CallingConvention = CallingConvention.StdCall)]
+        [DllImport(ReleaseDllPath, EntryPoint = "fill_depression_alg", CallingConvention = CallingConvention.StdCall)]
         static extern int FillDepressionAlg(string filename, bool indentify);
 
         public MainForm()
