@@ -1,32 +1,10 @@
-#include <gdal_priv.h>
-#include <iostream>
-
-#include "ToolMethod.hpp"
-#include "ArrayDEM.hpp"
-#include "DepressionAlgorithm.hpp"
-#include "FlowDirAlgorithm.hpp"
+#include "HydroFunction.hpp"
 
 using namespace std;
 
-int flow_dir_pf_d8_alg(const string &filename, bool forceout);
-int flow_dir_original_d8_alg(const string &filename, bool forceout);
-int fill_depression_alg(const string &filename, bool isIdentify);
-int identify_depression_alg(const string &filename);
-
-int main(void) {
-	string filename = "F:\\Work\\Experiment\\Processing\\tao\\data\\QZ.tif";
-
-	//flow_dir_original_d8_alg(filename, false);
-
-	//fill_depression_alg(filename, false);
-
-	identify_depression_alg(filename);
-
-	return 0;
-}
-
 //原始D8
-int flow_dir_original_d8_alg(const string &filename, bool forceout) {
+int __stdcall flow_dir_original_d8_alg(char *filename_char, bool forceout) {
+	const string filename(filename_char);
 	GDALDataType dataType = getGDALType(filename);
 
 	switch (dataType) {
@@ -68,7 +46,8 @@ int flow_dir_original_d8_alg(const string &filename, bool forceout) {
 }
 
 //Priority-Flood D8
-int flow_dir_pf_d8_alg(const string &filename, bool forceout) {
+int __stdcall flow_dir_pf_d8_alg(char *filename_char, bool forceout) {
+	const string filename(filename_char);
 	GDALDataType dataType = getGDALType(filename);
 
 	switch (dataType) {
@@ -110,7 +89,8 @@ int flow_dir_pf_d8_alg(const string &filename, bool forceout) {
 }
 
 //识别洼地
-int identify_depression_alg(const string &filename) {
+int __stdcall identify_depression_alg(char *filename_char) {
+	const string filename(filename_char);
 	GDALDataType dataType = getGDALType(filename);
 
 	switch (dataType) {
@@ -152,7 +132,8 @@ int identify_depression_alg(const string &filename) {
 }
 
 //填充洼地
-int fill_depression_alg(const string &filename, bool isIdentify) {
+int __stdcall fill_depression_alg(char *filename_char, bool isIdentify) {
+	const string filename(filename_char);
 	GDALDataType dataType = getGDALType(filename);
 
 	switch (dataType) {
