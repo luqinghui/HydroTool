@@ -60,14 +60,42 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DllExportMethod.cs" />
+    <Compile Include="FillForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FillForm.Designer.cs">
+      <DependentUpon>FillForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FlowDirD8From.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FlowDirD8From.Designer.cs">
+      <DependentUpon>FlowDirD8From.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FlowDirPFFrom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FlowDirPFFrom.Designer.cs">
+      <DependentUpon>FlowDirPFFrom.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FillForm.resx">
+      <DependentUpon>FillForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlowDirD8From.resx">
+      <DependentUpon>FlowDirD8From.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlowDirPFFrom.resx">
+      <DependentUpon>FlowDirPFFrom.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

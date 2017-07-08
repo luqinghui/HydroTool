@@ -12,8 +12,7 @@ typedef int32_t xy_t;
 typedef uint32_t i_t;
 
 template<class T>
-class ArrayDEM
-{
+class ArrayDEM {
 public:
 	string fullname;
 	string basename;
@@ -23,18 +22,16 @@ public:
 	vector<double> geotransform;
 	string projection;
 
-	ArrayDEM(const string &infile)
-	{
+	ArrayDEM(const string &infile) {
 		fullname = infile;
 		basename = fullname.substr(fullname.find_last_of('\\') + 1);
 		dir = fullname.substr(0, fullname.find_last_of('\\'));
-		ext = fullname.substr(fullname.find_last_of('.')+1);
+		ext = fullname.substr(fullname.find_last_of('.') + 1);
 		filename = basename.substr(0, basename.find_last_of('.'));
 		loadGDAL();
 	}
 
-	ArrayDEM()
-	{
+	ArrayDEM() {
 
 	}
 
@@ -51,7 +48,7 @@ public:
 		view_height = height;
 		view_width = width;
 	}
-	
+
 	T& operator()(xy_t x, xy_t y) {
 		return data[xyToI(x, y)];
 	}
@@ -60,39 +57,31 @@ public:
 	}
 
 
-	T* getData()
-	{
+	T* getData() {
 		return data.data();
 	}
 
-	xy_t width()
-	{
+	xy_t width() {
 		return view_width;
 	}
-	xy_t height()
-	{
+	xy_t height() {
 		return view_height;
 	}
 
-	T getNoData()
-	{
+	T getNoData() {
 		return no_data;
 	}
 
-	void setNoData(T val)
-	{
+	void setNoData(T val) {
 		no_data = val;
 	}
 
-	bool inGrid(xy_t x, xy_t y)
-	{
+	bool inGrid(xy_t x, xy_t y) {
 		return (0 <= x && x < view_width && 0 <= y && y < view_height);
 	}
 
-	bool isEdge(xy_t x, xy_t y)
-	{
-		for (int i = 0; i < 8; i++)
-		{
+	bool isEdge(xy_t x, xy_t y) {
+		for (int i = 0; i < 8; i++) {
 			xy_t nx = x + dx[i];
 			xy_t ny = y + dy[i];
 			if (!inGrid(nx, ny) || (data[xyToI(nx, ny)] == no_data))
@@ -101,17 +90,14 @@ public:
 		return false;
 	}
 
-	void saveGDAL(const string &filename)
-	{
+	void saveGDAL(const string &filename) {
 		GDALDriver *poDriver = GetGDALDriverManager()->GetDriverByName("GTiff");
-		if (poDriver == NULL)
-		{
+		if (poDriver == NULL) {
 			cerr << "Could not open GDAL driver!" << endl;
 			throw runtime_error("Could not open GDAL driver!");
 		}
 		GDALDataset *fout = poDriver->Create(filename.c_str(), view_width, view_height, 1, myGDALType(), NULL);
-		if (fout == NULL)
-		{
+		if (fout == NULL) {
 			cerr << "Could not create GDAL save file:" << filename << "!" << endl;
 			throw runtime_error("Could not create save file!");
 		}
@@ -152,14 +138,10 @@ public:
 		GDALClose(fout);
 	}
 
-	
-
-	void printStamp()
-	{
+	void printStamp() {
 		cout << "projection:" << projection << endl;
 		cout << "geotransform:" << endl;
-		for (auto iter = geotransform.cbegin(); iter != geotransform.cend(); iter++)
-		{
+		for (auto iter = geotransform.cbegin(); iter != geotransform.cend(); iter++) {
 			cout << *iter << endl;
 		}
 		cout << "width:" << view_width << endl;
@@ -174,17 +156,14 @@ private:
 	xy_t view_width;
 	xy_t view_height;
 
-	i_t xyToI(xy_t x, xy_t y)
-	{
+	i_t xyToI(xy_t x, xy_t y) {
 		return (i_t)y*(i_t)view_width + (i_t)x;
 	}
 
-	GDALDataType myGDALType() const
-	{
+	GDALDataType myGDALType() const {
 		return NativeTypeToGDAL<T>();
 	}
-	void loadGDAL()
-	{
+	void loadGDAL() {
 		GDALAllRegister();
 		GDALDataset *fin = (GDALDataset*)GDALOpen(fullname.c_str(), GA_ReadOnly);
 		if (fin == NULL)
@@ -194,8 +173,7 @@ private:
 		view_width = band->GetXSize();
 		no_data = band->GetNoDataValue();
 		geotransform.resize(6);
-		if (fin->GetGeoTransform(geotransform.data()) != CE_None)
-		{
+		if (fin->GetGeoTransform(geotransform.data()) != CE_None) {
 			cerr << "Warning, could not get a geotransform from '" << fullname << "'! Setting to standard geotransform." << endl;
 			geotransform = { { 1000., 1., 0., 1000., 0., -1. } };
 		}

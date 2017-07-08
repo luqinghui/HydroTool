@@ -32,16 +32,21 @@
             this.depressionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fillDepressionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.identifyDepressionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.flowDirectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.d8ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pFJiangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.depressionToolStripMenuItem});
+            this.depressionToolStripMenuItem,
+            this.flowDirectionToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(358, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(690, 25);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -57,7 +62,7 @@
             // fillDepressionToolStripMenuItem
             // 
             this.fillDepressionToolStripMenuItem.Name = "fillDepressionToolStripMenuItem";
-            this.fillDepressionToolStripMenuItem.Size = new System.Drawing.Size(157, 22);
+            this.fillDepressionToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.fillDepressionToolStripMenuItem.Text = "FillDepression";
             this.fillDepressionToolStripMenuItem.Click += new System.EventHandler(this.fillDepressionToolStripMenuItem_Click);
             // 
@@ -68,11 +73,41 @@
             this.identifyDepressionToolStripMenuItem.Text = "IdentifyDepression";
             this.identifyDepressionToolStripMenuItem.Click += new System.EventHandler(this.identifyDepressionToolStripMenuItem_Click);
             // 
+            // flowDirectionToolStripMenuItem
+            // 
+            this.flowDirectionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.d8ToolStripMenuItem,
+            this.pFToolStripMenuItem,
+            this.pFJiangToolStripMenuItem});
+            this.flowDirectionToolStripMenuItem.Name = "flowDirectionToolStripMenuItem";
+            this.flowDirectionToolStripMenuItem.Size = new System.Drawing.Size(102, 21);
+            this.flowDirectionToolStripMenuItem.Text = "Flow Direction";
+            // 
+            // d8ToolStripMenuItem
+            // 
+            this.d8ToolStripMenuItem.Name = "d8ToolStripMenuItem";
+            this.d8ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.d8ToolStripMenuItem.Text = "D8";
+            this.d8ToolStripMenuItem.Click += new System.EventHandler(this.d8ToolStripMenuItem_Click);
+            // 
+            // pFToolStripMenuItem
+            // 
+            this.pFToolStripMenuItem.Name = "pFToolStripMenuItem";
+            this.pFToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pFToolStripMenuItem.Text = "PF";
+            this.pFToolStripMenuItem.Click += new System.EventHandler(this.pFToolStripMenuItem_Click);
+            // 
+            // pFJiangToolStripMenuItem
+            // 
+            this.pFJiangToolStripMenuItem.Name = "pFJiangToolStripMenuItem";
+            this.pFJiangToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pFJiangToolStripMenuItem.Text = "PF(Jiang)";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(358, 293);
+            this.ClientSize = new System.Drawing.Size(690, 49);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
@@ -90,6 +125,10 @@
         private System.Windows.Forms.ToolStripMenuItem depressionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fillDepressionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem identifyDepressionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem flowDirectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem d8ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pFToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pFJiangToolStripMenuItem;
     }
 }
 

@@ -7,17 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
 namespace UserForm
 {    
     public partial class MainForm : Form
     {
-        const string DebugDllPath = @"..\..\..\x64\Debug\Toolbox.dll";
-        const string ReleaseDllPath = @"..\..\..\x64\Release\Toolbox.dll";
-
-        [DllImport(ReleaseDllPath, EntryPoint = "fill_depression_alg", CallingConvention = CallingConvention.StdCall)]
-        static extern int FillDepressionAlg(string filename, bool indentify);
+        
 
         public MainForm()
         {
@@ -26,17 +21,30 @@ namespace UserForm
 
         private void fillDepressionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog open_dlg = new OpenFileDialog();
-            if (open_dlg.ShowDialog() == DialogResult.OK)
-            {
-                FillDepressionAlg(open_dlg.FileName, false);
-                MessageBox.Show("Fill Done!");
-            }
+            FillForm fill = new FillForm();
+            fill.ShowDialog();
         }
 
         private void identifyDepressionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            OpenFileDialog open_dlg = new OpenFileDialog();
+            if(open_dlg.ShowDialog() == DialogResult.OK)
+            {
+                DllExportMethod.IdentifyDepressionAlg(open_dlg.FileName);
+                MessageBox.Show("Identify Done!");
+            }
+        }
 
+        private void d8ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FlowDirD8From d8 = new FlowDirD8From();
+            d8.ShowDialog();
+        }
+
+        private void pFToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FlowDirPFFrom pf = new FlowDirPFFrom();
+            pf.ShowDialog();
         }
     }
 }

@@ -2,6 +2,7 @@
 #define DEPRESSIONALGORITHM_
 
 #include <iostream>
+#include <list>
 
 #include "GridCell.hpp"
 
@@ -82,23 +83,26 @@ void fill_depression(const string &filename, bool isIdentify) {
 		closed.saveGDAL(elevation.dir + '\\' + elevation.filename + "-fill-more-info.tif");
 }
 
+struct InfoStruct {
+	int32_t x;
+	int32_t y;
+	uint32_t count;
+};
+
 //get the depressions information
 template<class elev_t>
 void identify_depression(const string &filename) {
-	ArrayDEM<elev_t> elevation(filename);
-	ArrayDEM<uint32_t> depression;
+	std::list<InfoStruct> infos;
 
-	depression.resize(elevation, -2);
-	depression.setNoData(-2);
+	ArrayDEM<elev_t> elevation(filename);
+	ArrayDEM<uint8_t> depression;
+
+	depression.resize(elevation, 10);
+	depression.setNoData(0);
 
 	GridCellZ_pq<elev_t> open;
 	queue<GridCellZ<elev_t>> pit;
 	queue<GridCellZ<elev_t>> flat;
-
-	vector<GridCell> pit_cells;
-
-	//queue<GridCell> pour;
-	GridCell pour;
 
 	elev_t no_data = elevation.getNoData();
 
@@ -113,17 +117,16 @@ void identify_depression(const string &filename) {
 					depression(x, y) = 0;
 				}
 				else
-					depression(x, y) = -1;
+					depression(x, y) = 1;
 			}
 		}
 	}
 
-	//-2: nodata
-	//-1: cell had value
-	//0:  processed
+	//1: cell had value but have not been proceed
+	//0:  slope
 	//
-	bool first = false;
-	uint32_t count = -1;
+	bool is_pour = false;
+	int32_t id = -1;
 	while (open.size() > 0 || pit.size() > 0 || flat.size() > 0) {
 		GridCellZ<elev_t> c;
 		if (pit.size() > 0) {
@@ -131,14 +134,11 @@ void identify_depression(const string &filename) {
 			pit.pop();
 		}
 		else {
-			if (first == false) {
-				first = true;
-				++count;	//记录洼地编号
-
-				//计算信息（洼地面积、栅格数目及出口位置）
-				if (count != 0) {
-
-				}
+			if (is_pour == false) {
+				is_pour = true;
+				//if (!infos.empty())
+				//	if (infos.back().count < 0)
+				//		infos.pop_back();
 			}
 			if (flat.size() > 0) {
 				c = flat.front();
@@ -153,16 +153,19 @@ void identify_depression(const string &filename) {
 			xy_t nx = c.x + dx[n];
 			xy_t ny = c.y + dy[n];
 
-			if (elevation.inGrid(nx, ny) && depression(nx, ny) == -1) {
+			if (elevation.inGrid(nx, ny) && depression(nx, ny) == 1) {
 				if (elevation(nx, ny) < c.z) {
-					if (first) {
-						first = false;
-						//pour.push(GridCell(nx, ny));
-						pour = GridCell(nx, ny);	//记录洼地出口位置
+					if (is_pour) {
+						is_pour = false;
+						infos.push_back(InfoStruct());
+						infos.back().x = nx;
+						infos.back().y = ny;
+						infos.back().count = 1;
+						depression(nx, ny) += 1;
 					}
+					infos.back().count += 1;
 					pit.push(GridCellZ<elev_t>(nx, ny, c.z));
-					pit_cells.push_back(GridCell(nx, ny));
-					depression(nx, ny) = 1;	//标识洼地
+					depression(nx, ny) += 2;	//标识洼地
 				}
 				else if (elevation(nx, ny) == c.z) {
 					flat.push(GridCellZ<elev_t>(nx, ny, c.z));
@@ -177,10 +180,19 @@ void identify_depression(const string &filename) {
 	}
 
 	//输出洼地信息文件
-
-	depression.saveGDAL(elevation.dir + '\\' + elevation.filename + "-pits.tif", GDT_Int32);
+	SaveInfoToCSV(infos, elevation.dir + '\\' + elevation.filename + "-pits.csv");
+	//保存洼地
+	depression.saveGDAL(elevation.dir + '\\' + elevation.filename + "-pits.tif", GDT_Byte);
 }
 
+void SaveInfoToCSV(std::list<InfoStruct> infos, string &filename) {
+	FILE *f;
+	f = fopen(filename.c_str(), "w");
+	for each (InfoStruct info in infos) {
+		fprintf(f, "%d,%d,%d\n", info.x, info.y, info.count);
+	}
+	fclose(f);
+}
 
 template<class elev_t>
 void NestedDepression(const string &filename) {
