@@ -28,7 +28,7 @@ namespace UserForm
 
         private void button2_Click(object sender, EventArgs e)
         {
-            DllExportMethod.FlowDirectionPF(FileNameTextBox.Text, false);
+            DllExportMethod.FlowDirectionD8(FileNameTextBox.Text, false);
             MessageBox.Show("Flow Direction Done!");
         }
     }

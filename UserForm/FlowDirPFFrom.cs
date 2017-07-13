@@ -25,5 +25,11 @@ namespace UserForm
                 FileNameTextBox.Text = open_dlg.FileName;
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DllExportMethod.FlowDirectionPF(FileNameTextBox.Text, false);
+            MessageBox.Show("Flow Direction Done!");
+        }
     }
 }
