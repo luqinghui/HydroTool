@@ -154,6 +154,7 @@
     <ClInclude Include="DepressionAlgorithm.hpp" />
     <ClInclude Include="ArrayDEM.hpp" />
     <ClInclude Include="Constants.hpp" />
+    <ClInclude Include="FlowAccumulation.hpp" />
     <ClInclude Include="FlowDirAlgorithm.hpp" />
     <ClInclude Include="GridCell.hpp" />
     <ClInclude Include="HydroFunction.hpp" />

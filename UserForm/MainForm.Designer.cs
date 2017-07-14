@@ -36,6 +36,8 @@
             this.d8ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pFToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pFJiangToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.flowAccumulationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.originalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -43,7 +45,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.depressionToolStripMenuItem,
-            this.flowDirectionToolStripMenuItem});
+            this.flowDirectionToolStripMenuItem,
+            this.flowAccumulationToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(690, 25);
@@ -86,22 +89,37 @@
             // d8ToolStripMenuItem
             // 
             this.d8ToolStripMenuItem.Name = "d8ToolStripMenuItem";
-            this.d8ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.d8ToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.d8ToolStripMenuItem.Text = "D8";
             this.d8ToolStripMenuItem.Click += new System.EventHandler(this.d8ToolStripMenuItem_Click);
             // 
             // pFToolStripMenuItem
             // 
             this.pFToolStripMenuItem.Name = "pFToolStripMenuItem";
-            this.pFToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pFToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.pFToolStripMenuItem.Text = "PF";
             this.pFToolStripMenuItem.Click += new System.EventHandler(this.pFToolStripMenuItem_Click);
             // 
             // pFJiangToolStripMenuItem
             // 
             this.pFJiangToolStripMenuItem.Name = "pFJiangToolStripMenuItem";
-            this.pFJiangToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pFJiangToolStripMenuItem.Size = new System.Drawing.Size(127, 22);
             this.pFJiangToolStripMenuItem.Text = "PF(Jiang)";
+            // 
+            // flowAccumulationToolStripMenuItem
+            // 
+            this.flowAccumulationToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.originalToolStripMenuItem});
+            this.flowAccumulationToolStripMenuItem.Name = "flowAccumulationToolStripMenuItem";
+            this.flowAccumulationToolStripMenuItem.Size = new System.Drawing.Size(127, 21);
+            this.flowAccumulationToolStripMenuItem.Text = "Flow Accumulation";
+            // 
+            // originalToolStripMenuItem
+            // 
+            this.originalToolStripMenuItem.Name = "originalToolStripMenuItem";
+            this.originalToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.originalToolStripMenuItem.Text = "Original";
+            this.originalToolStripMenuItem.Click += new System.EventHandler(this.originalToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -129,6 +147,8 @@
         private System.Windows.Forms.ToolStripMenuItem d8ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pFToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem pFJiangToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem flowAccumulationToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem originalToolStripMenuItem;
     }
 }
 
