@@ -67,6 +67,12 @@
     <Compile Include="FillForm.Designer.cs">
       <DependentUpon>FillForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="FlowAccuForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FlowAccuForm.Designer.cs">
+      <DependentUpon>FlowAccuForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="FlowDirD8From.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -89,6 +95,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FillForm.resx">
       <DependentUpon>FillForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FlowAccuForm.resx">
+      <DependentUpon>FlowAccuForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FlowDirD8From.resx">
       <DependentUpon>FlowDirD8From.cs</DependentUpon>

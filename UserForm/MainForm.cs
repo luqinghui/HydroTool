@@ -49,7 +49,8 @@ namespace UserForm
 
         private void originalToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            FlowAccuForm accu = new FlowAccuForm();
+            accu.ShowDialog();
         }
     }
 }

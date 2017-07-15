@@ -90,6 +90,13 @@ public:
 		return false;
 	}
 
+	bool isNoData(xy_t x, xy_t y) {
+		if (data[xyToI(x, y)] == no_data)
+			return true;
+		else
+			return false;
+	}
+
 	void saveGDAL(const string &filename) {
 		GDALDriver *poDriver = GetGDALDriverManager()->GetDriverByName("GTiff");
 		if (poDriver == NULL) {

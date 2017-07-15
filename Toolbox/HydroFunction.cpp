@@ -184,25 +184,25 @@ int __stdcall flow_accu_alg(char *filename_char) {
 		cerr << "Unrecognised data type: " << dataType << endl;
 		return -1;
 	case GDT_Byte:
-		fill_depression<uint8_t >(filename, isIdentify);
+		flow_accu<uint8_t >(filename);
 		break;
 	case GDT_UInt16:
-		fill_depression<uint16_t >(filename, isIdentify);
+		flow_accu<uint16_t >(filename);
 		break;
 	case GDT_Int16:
-		fill_depression<int16_t >(filename, isIdentify);
+		flow_accu<int16_t >(filename);
 		break;
 	case GDT_UInt32:
-		fill_depression<uint32_t >(filename, isIdentify);
+		flow_accu<uint32_t >(filename);
 		break;
 	case GDT_Int32:
-		fill_depression<int32_t >(filename, isIdentify);
+		flow_accu<int32_t >(filename);
 		break;
 	case GDT_Float32:
-		fill_depression<float >(filename, isIdentify);
+		flow_accu<float >(filename);
 		break;
 	case GDT_Float64:
-		fill_depression<double >(filename, isIdentify);
+		flow_accu<double >(filename);
 		break;
 	case GDT_CInt16:
 	case GDT_CInt32:
@@ -213,5 +213,6 @@ int __stdcall flow_accu_alg(char *filename_char) {
 	default:
 		cerr << "Unrecognised data type: " << dataType << endl;
 		return -1;
+	}
 }
 

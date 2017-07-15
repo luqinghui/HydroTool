@@ -20,7 +20,7 @@ void fill_depression(const string &filename, bool isIdentify) {
 	closed.resize(elevation, 0);
 	closed.setNoData(0);
 
-	elev_t no_data = elevation.getNoData();
+	//elev_t no_data = elevation.getNoData();
 
 	xy_t width = elevation.width();
 	xy_t height = elevation.height();
@@ -34,7 +34,7 @@ void fill_depression(const string &filename, bool isIdentify) {
 	//put boundary cell into open and set closed to 2, set closed value to 1 that is not no_data
 	for (xy_t x = 0; x < width; x++) {
 		for (xy_t y = 0; y < height; y++) {
-			if (elevation(x, y) != no_data) {
+			if (!elevation.isNoData(x, y)) {
 				if (elevation.isEdge(x, y)) {
 					open.emplace(x, y, elevation(x, y));
 					closed(x, y) = 2;
