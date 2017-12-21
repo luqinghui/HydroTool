@@ -1,6 +1,6 @@
 ﻿namespace UserForm
 {
-    partial class FillForm
+    partial class IdentifyNestedDepressionsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -38,7 +38,7 @@
             this.button2.Location = new System.Drawing.Point(24, 74);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 7;
+            this.button2.TabIndex = 11;
             this.button2.Text = "计算";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
@@ -49,19 +49,19 @@
             this.FileNameTextBox.Name = "FileNameTextBox";
             this.FileNameTextBox.ReadOnly = true;
             this.FileNameTextBox.Size = new System.Drawing.Size(344, 21);
-            this.FileNameTextBox.TabIndex = 6;
+            this.FileNameTextBox.TabIndex = 10;
             // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(24, 12);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
+            this.button1.TabIndex = 8;
             this.button1.Text = "选择数据";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // FillForm
+            // IdentifyNestedDepressionsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -69,8 +69,8 @@
             this.Controls.Add(this.button2);
             this.Controls.Add(this.FileNameTextBox);
             this.Controls.Add(this.button1);
-            this.Name = "FillForm";
-            this.Text = "Fill Depression";
+            this.Name = "IdentifyNestedDepressionsForm";
+            this.Text = "IdentifyNestedDepressionsForm";
             this.ResumeLayout(false);
             this.PerformLayout();
 

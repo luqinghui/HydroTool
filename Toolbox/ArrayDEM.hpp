@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <gdal_priv.h>
-#include "Constants.hpp"
+#include "ConstantsDefinition.hpp"
 
 using namespace std;
 
@@ -61,10 +61,10 @@ public:
 		return data.data();
 	}
 
-	xy_t width() {
+	xy_t width() const {
 		return view_width;
 	}
-	xy_t height() {
+	xy_t height() const {
 		return view_height;
 	}
 
@@ -95,6 +95,37 @@ public:
 			return true;
 		else
 			return false;
+	}
+
+	bool isTopLeft(xy_t x, xy_t y) const { 
+		return x == 0 && y == 0; 
+	}
+
+	bool isTopRight(xy_t x, xy_t y) const { 
+		return x == width() - 1 && y == 0; 
+	}
+	
+	bool isBottomLeft(xy_t x, xy_t y) const { 
+		return x == 0 && y == height() - 1; 
+	}
+	
+	bool isBottomRight(xy_t x, xy_t y) const { 
+		return x == width() - 1 && y == height() - 1; 
+	}
+
+	bool isTopRow(xy_t x, xy_t y) const { 
+		return y == 0; 
+	}
+	
+	bool isBottomRow(xy_t x, xy_t y) const { 
+		return y == height() - 1; 
+	}
+	
+	bool isLeftCol(xy_t x, xy_t y) const { 
+		return x == 0; 
+	}
+	bool isRightCol(xy_t x, xy_t y) const { 
+		return x == width() - 1; 
 	}
 
 	void saveGDAL(const string &filename) {

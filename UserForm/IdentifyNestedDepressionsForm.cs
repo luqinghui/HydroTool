@@ -10,18 +10,11 @@ using System.Windows.Forms;
 
 namespace UserForm
 {
-    public partial class FillForm : Form
+    public partial class IdentifyNestedDepressionsForm : Form
     {
-        public FillForm()
+        public IdentifyNestedDepressionsForm()
         {
             InitializeComponent();
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-           
-            DllExportMethod.FillDepressions(FileNameTextBox.Text);
-            MessageBox.Show("Fill Done!");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -31,6 +24,12 @@ namespace UserForm
             {
                 FileNameTextBox.Text = open_dlg.FileName;
             }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            DllExportMethod.IdentifyNestedDepressions(FileNameTextBox.Text);
+            MessageBox.Show("Flow Direction Done!");
         }
     }
 }

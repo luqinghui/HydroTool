@@ -37,9 +37,15 @@ public:
 	bool operator > (const GridCellZk<elev_t>& a) const { return GridCellZ<elev_t>::z > a.z; }
 };
 
+//minimum priority queue
 template<typename elev_t>
 using GridCellZ_pq = priority_queue<GridCellZ<elev_t>, vector<GridCellZ<elev_t>>, greater<GridCellZ<elev_t>>>;
 
+//maximum priority queue
+template<typename elev_t>
+using GridCellZ_pq_max = priority_queue<GridCellZ<elev_t>, vector<GridCellZ<elev_t>>, less<GridCellZ<elev_t>>>;
+
+//stable minimum priority queue
 template<typename elev_t>
 class GridCellZk_pq: public priority_queue< GridCellZk<elev_t>, vector<GridCellZk<elev_t>>, greater<GridCellZk<elev_t>>>
 {
@@ -55,6 +61,8 @@ public:
 		priority_queue<GridCellZk<elev_t>, vector<GridCellZk<elev_t>>, greater<GridCellZk<elev_t>>>::emplace(x, y, z, ++count);
 	}
 };
+
+//stable maximum priority queue
 
 
 #endif

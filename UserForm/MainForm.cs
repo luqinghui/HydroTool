@@ -30,7 +30,7 @@ namespace UserForm
             OpenFileDialog open_dlg = new OpenFileDialog();
             if(open_dlg.ShowDialog() == DialogResult.OK)
             {
-                DllExportMethod.IdentifyDepressionAlg(open_dlg.FileName);
+                DllExportMethod.IdentifyDepressions(open_dlg.FileName);
                 MessageBox.Show("Identify Done!");
             }
         }

@@ -139,6 +139,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <CallingConvention>StdCall</CallingConvention>
+      <CompileAs>CompileAsCpp</CompileAs>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -151,11 +152,11 @@
     <ClCompile Include="HydroFunction.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DepressionAlgorithm.hpp" />
+    <ClInclude Include="Depressions.hpp" />
     <ClInclude Include="ArrayDEM.hpp" />
-    <ClInclude Include="Constants.hpp" />
+    <ClInclude Include="ConstantsDefinition.hpp" />
     <ClInclude Include="FlowAccumulation.hpp" />
-    <ClInclude Include="FlowDirAlgorithm.hpp" />
+    <ClInclude Include="FlowDirection.hpp" />
     <ClInclude Include="GridCell.hpp" />
     <ClInclude Include="HydroFunction.hpp" />
     <ClInclude Include="ToolMethod.hpp" />
